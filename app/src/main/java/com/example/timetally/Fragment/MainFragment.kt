@@ -1,17 +1,14 @@
 package com.example.timetally.Fragment
 
+import EmployeeListFragment
 import android.app.DatePickerDialog
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.ViewModel.EmployeeViewModel
-import com.example.timetally.Adapter.EmployeeAdapter
 import com.example.timetally.R
 import com.example.timetally.databinding.FragmentMainBinding
 import java.text.SimpleDateFormat
@@ -55,7 +52,6 @@ class MainFragment : Fragment() {
                 selectedDate.set(year, month, dayOfMonth)
                 updateDate()
 
-                // Perform fragment transaction to navigate to EmployeeListFragment
                 parentFragmentManager.beginTransaction()
                     .replace(R.id.FrameLayoutID, EmployeeListFragment())
                     .addToBackStack(null)

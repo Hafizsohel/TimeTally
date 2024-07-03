@@ -14,11 +14,9 @@ import com.example.timetally.databinding.FragmentCustomDialogBinding
 
 private const val TAG = "CustomDialogFragment"
 class CustomDialogFragment : DialogFragment() {
-
     private lateinit var employeeViewModel: EmployeeViewModel
     private var _binding: FragmentCustomDialogBinding? = null
     private val binding get() = _binding!!
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -31,11 +29,11 @@ class CustomDialogFragment : DialogFragment() {
         binding.buttonSubmit.setOnClickListener {
             val employeeName = binding.fullEmployeeName.text.toString()
             if (employeeName.isNotEmpty()) {
-                val employee = Employee(name = employeeName)
+                val employee = Employee(name = employeeName, isPresent = false)
                 employeeViewModel.addEmployee(employee)
+                employeeViewModel.addPresentEmployee(employee)
                 Toast.makeText(requireContext(), "Successfully Added", Toast.LENGTH_LONG).show()
                 dismiss()
-                Log.d("CustomDialogFragment", "Employee added: $employeeName")
             } else {
                 Toast.makeText(requireContext(), "Please enter a name", Toast.LENGTH_SHORT).show()
             }
