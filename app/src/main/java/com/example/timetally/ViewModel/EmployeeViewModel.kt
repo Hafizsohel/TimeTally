@@ -1,4 +1,4 @@
-package com.example.ViewModel
+package com.example.timetally.ViewModel
 
 import android.app.Application
 import androidx.lifecycle.*

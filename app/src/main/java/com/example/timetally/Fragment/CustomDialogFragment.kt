@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
-import com.example.ViewModel.EmployeeViewModel
+import com.example.timetally.ViewModel.EmployeeViewModel
 import com.example.timetally.Data.Employee
 import com.example.timetally.databinding.FragmentCustomDialogBinding
 
@@ -31,7 +31,7 @@ class CustomDialogFragment : DialogFragment() {
             if (employeeName.isNotEmpty()) {
                 val employee = Employee(name = employeeName, isPresent = false)
                 employeeViewModel.addEmployee(employee)
-                employeeViewModel.addPresentEmployee(employee)
+              //  employeeViewModel.update(employee)
                 Toast.makeText(requireContext(), "Successfully Added", Toast.LENGTH_LONG).show()
                 dismiss()
             } else {
