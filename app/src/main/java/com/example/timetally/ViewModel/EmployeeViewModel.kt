@@ -1,6 +1,21 @@
 package com.example.timetally.ViewModel
 
 import android.app.Application
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
+import com.example.timetally.DAO.EmployeeDao
+import com.example.timetally.DAO.EmployeeDatabase
+import com.example.timetally.Data.Employee
+import com.example.timetally.Repository.EmployeeRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+
+/*
+package com.example.timetally.ViewModel
+
+import android.app.Application
 import androidx.lifecycle.*
 import com.example.timetally.DAO.EmployeeDao
 import com.example.timetally.DAO.EmployeeDatabase
@@ -9,6 +24,7 @@ import com.example.timetally.Data.Employee
 import com.example.timetally.Repository.EmployeeRepository
 import kotlinx.coroutines.Dispatchers
 
+*/
 /*
 class EmployeeViewModel(application: Application) : AndroidViewModel(application) {
      val allEmployees: LiveData<List<Employee>>
@@ -24,6 +40,8 @@ class EmployeeViewModel(application: Application) : AndroidViewModel(application
         }
     }
 }
+
+
 */
 /*
 class EmployeeViewModel(application: Application) : AndroidViewModel(application) {
@@ -55,29 +73,33 @@ class EmployeeViewModel(application: Application) : AndroidViewModel(application
 */
 
 
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.viewModelScope
 
 class EmployeeViewModel(application: Application) : AndroidViewModel(application) {
     private val repository: EmployeeRepository
     private val employeeDao: EmployeeDao = EmployeeDatabase.getDatabase(application).employeeDao()
     val allEmployees: LiveData<List<Employee>> = employeeDao.getAllEmployees()
     val presentEmployees: LiveData<List<Employee>> = employeeDao.getPresentEmployees()
+
     init {
         repository = EmployeeRepository(employeeDao)
     }
     fun getEmployeeDao(): EmployeeDao {
         return employeeDao
     }
+
     fun addEmployee(employee: Employee) {
         viewModelScope.launch(Dispatchers.IO) {
             repository.insertEmployee(employee)
         }
     }
-    fun addPresentEmployee(employee: Employee) {
+
+    fun updateEmployeePresence(employee: Employee) {
         viewModelScope.launch(Dispatchers.IO) {
-            repository.updatePresence(employee.id, true)
+            employeeDao.update(employee)
+            if (employee.isPresent) {
+                addEmployee(employee)
+            }
         }
     }
 }
+

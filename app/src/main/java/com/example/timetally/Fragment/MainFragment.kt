@@ -27,8 +27,7 @@ class MainFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentMainBinding.inflate(inflater, container, false)
-      employeeViewModel = ViewModelProvider(this).get(EmployeeViewModel::class.java)
-
+        employeeViewModel = ViewModelProvider(this).get(EmployeeViewModel::class.java)
         binding.fabBtn.setOnClickListener {
             val dialogFragment = CustomDialogFragment()
             dialogFragment.show(parentFragmentManager, "CustomDialogFragment")
@@ -37,13 +36,14 @@ class MainFragment : Fragment() {
             showDatePicker()
         }
         binding.btnAttendanceList.setOnClickListener {
-                parentFragmentManager.beginTransaction()
-                    .replace(R.id.FrameLayoutID, EmployeeListFragment())
-                    .addToBackStack(null)
-                    .commit()
-            }
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.FrameLayoutID, EmployeeListFragment())
+                .addToBackStack(null)
+                .commit()
+        }
         return binding.root
     }
+
     private fun showDatePicker() {
         val datePicker = DatePickerDialog(
             requireContext(),
@@ -62,14 +62,11 @@ class MainFragment : Fragment() {
         )
         datePicker.show()
     }
+
     private fun updateDate() {
         val myFormat = "dd/MM/yyyy"
         val sdf = SimpleDateFormat(myFormat, Locale.US)
         binding.btnSelectDate.text = sdf.format(selectedDate.time)
-    }
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }
 

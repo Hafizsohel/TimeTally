@@ -13,43 +13,85 @@ package com.example.timetally.Fragment
     import com.example.timetally.Adapter.EmployeeAdapter
     import com.example.timetally.Adapter.PresenceAdapter
     import com.example.timetally.R
+    import com.example.timetally.databinding.FragmentEmployeeListBinding
 
-    class EmployeeListFragment : Fragment() {
+/*class EmployeeListFragment : Fragment() {
 
         private lateinit var employeeViewModel: EmployeeViewModel
         private lateinit var employeeAdapter: EmployeeAdapter
         private lateinit var presenceAdapter: PresenceAdapter
 
+        private var _binding: FragmentEmployeeListBinding? = null
+        private val binding get() = _binding!!
 
         override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
         ): View? {
-            val view = inflater.inflate(R.layout.fragment_employee_list, container, false)
-            val recyclerViewEmployee = view.findViewById<RecyclerView>(R.id.employeeRecyclerView)
-            val recyclerViewEmployeePresence = view.findViewById<RecyclerView>(R.id.recyclerViewEmployeePresence)
+            _binding = FragmentEmployeeListBinding.inflate(inflater, container, false)
 
             employeeViewModel = ViewModelProvider(this).get(EmployeeViewModel::class.java)
 
+           *//* employeeAdapter = EmployeeAdapter(employeeViewModel.getEmployeeDao()) { employee ->
+                employeeViewModel.addEmployee(employee)
+            }*//*
+
             employeeAdapter = EmployeeAdapter(employeeViewModel.getEmployeeDao()) { employee ->
-                employeeViewModel.addPresentEmployee(employee)
+                employeeViewModel.updateEmployeePresence(employee)
             }
             presenceAdapter = PresenceAdapter()
 
-            recyclerViewEmployee.adapter = employeeAdapter
-            recyclerViewEmployee.layoutManager = LinearLayoutManager(context)
-            recyclerViewEmployeePresence.adapter = presenceAdapter
-            recyclerViewEmployeePresence.layoutManager = LinearLayoutManager(context)
-
+            binding.employeeRecyclerView.adapter = employeeAdapter
+            binding.employeeRecyclerView.layoutManager = LinearLayoutManager(context)
+            binding.recyclerViewEmployeePresence.adapter = presenceAdapter
+            binding.recyclerViewEmployeePresence.layoutManager = LinearLayoutManager(context)
 
 
             employeeViewModel.allEmployees.observe(viewLifecycleOwner, Observer { employees ->
                 employees?.let { employeeAdapter.setEmployees(it) }
             })
-
             employeeViewModel.presentEmployees.observe(viewLifecycleOwner, Observer { presentEmployees ->
-                presentEmployees?.let { presenceAdapter.setEmployees(it) }
+                presentEmployees?.let { presenceAdapter.setPresenceEmployees(it) }
             })
-            return view
+            return binding.root
         }
+    }*/
+
+
+class EmployeeListFragment : Fragment() {
+    private lateinit var employeeViewModel: EmployeeViewModel
+    private lateinit var employeeAdapter: EmployeeAdapter
+    private lateinit var presenceAdapter: PresenceAdapter
+
+    private var _binding: FragmentEmployeeListBinding? = null
+    private val binding get() = _binding!!
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        _binding = FragmentEmployeeListBinding.inflate(inflater, container, false)
+
+        employeeViewModel = ViewModelProvider(this).get(EmployeeViewModel::class.java)
+
+        employeeAdapter = EmployeeAdapter(employeeViewModel.getEmployeeDao()) { employee ->
+            employeeViewModel.updateEmployeePresence(employee)
+        }
+        presenceAdapter = PresenceAdapter()
+
+        binding.employeeRecyclerView.adapter = employeeAdapter
+        binding.employeeRecyclerView.layoutManager = LinearLayoutManager(context)
+        binding.recyclerViewEmployeePresence.adapter = presenceAdapter
+        binding.recyclerViewEmployeePresence.layoutManager = LinearLayoutManager(context)
+
+        employeeViewModel.allEmployees.observe(viewLifecycleOwner, Observer { employees ->
+            employees?.let { employeeAdapter.setEmployees(it) }
+        })
+
+        employeeViewModel.presentEmployees.observe(viewLifecycleOwner, Observer { presentEmployees ->
+            presentEmployees?.let { presenceAdapter.setPresenceEmployees(it) }
+        })
+
+        return binding.root
     }
+}

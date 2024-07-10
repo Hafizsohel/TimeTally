@@ -22,7 +22,6 @@ interface EmployeeDao {
     @Query("SELECT * FROM employee_table WHERE isPresent = 1 ORDER BY id ASC")
     fun getPresentEmployees(): LiveData<List<Employee>>
 
-
     @Query("UPDATE employee_table SET isPresent = :isPresent WHERE id = :employeeId")
     suspend fun updatePresence(employeeId: Long, isPresent: Boolean)
 

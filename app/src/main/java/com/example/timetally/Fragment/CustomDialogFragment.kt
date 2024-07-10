@@ -13,6 +13,7 @@ import com.example.timetally.Data.Employee
 import com.example.timetally.databinding.FragmentCustomDialogBinding
 
 private const val TAG = "CustomDialogFragment"
+
 class CustomDialogFragment : DialogFragment() {
     private lateinit var employeeViewModel: EmployeeViewModel
     private var _binding: FragmentCustomDialogBinding? = null
@@ -31,7 +32,7 @@ class CustomDialogFragment : DialogFragment() {
             if (employeeName.isNotEmpty()) {
                 val employee = Employee(name = employeeName, isPresent = false)
                 employeeViewModel.addEmployee(employee)
-              //  employeeViewModel.update(employee)
+                //employeeViewModel.addPresentEmployee(employee)
                 Toast.makeText(requireContext(), "Successfully Added", Toast.LENGTH_LONG).show()
                 dismiss()
             } else {
@@ -42,11 +43,6 @@ class CustomDialogFragment : DialogFragment() {
             dismiss()
         }
         return binding.root
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }
 
