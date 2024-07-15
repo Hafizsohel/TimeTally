@@ -30,9 +30,8 @@ class CustomDialogFragment : DialogFragment() {
         binding.buttonSubmit.setOnClickListener {
             val employeeName = binding.fullEmployeeName.text.toString()
             if (employeeName.isNotEmpty()) {
-                val employee = Employee(name = employeeName, isPresent = false)
+                val employee = Employee(name = employeeName, isPresence = false)
                 employeeViewModel.addEmployee(employee)
-                //employeeViewModel.addPresentEmployee(employee)
                 Toast.makeText(requireContext(), "Successfully Added", Toast.LENGTH_LONG).show()
                 dismiss()
             } else {

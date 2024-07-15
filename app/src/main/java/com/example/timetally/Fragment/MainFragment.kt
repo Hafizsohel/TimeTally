@@ -37,7 +37,7 @@ class MainFragment : Fragment() {
         }
         binding.btnAttendanceList.setOnClickListener {
             parentFragmentManager.beginTransaction()
-                .replace(R.id.FrameLayoutID, EmployeeListFragment())
+                .replace(R.id.FrameLayoutID, EmployeeStatusFragment())
                 .addToBackStack(null)
                 .commit()
         }

@@ -34,4 +34,11 @@ class PresenceAdapter : RecyclerView.Adapter<PresenceAdapter.PresenceViewHolder>
         this.presenceEmployees = employees.toMutableList()
         notifyDataSetChanged()
     }
+
+    fun getEmployees(): List<Employee> {
+        return presenceEmployees
+    }
+    fun hasData(): Boolean {
+        return presenceEmployees.isNotEmpty()
+    }
 }

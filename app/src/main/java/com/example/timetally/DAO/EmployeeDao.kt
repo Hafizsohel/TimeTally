@@ -14,15 +14,14 @@ interface EmployeeDao {
     suspend fun insert(employee: Employee)
 
     @Update
-    suspend fun update(employee: Employee)
+    suspend fun updateEmployee(employee: Employee)
 
     @Query("SELECT * FROM employee_table ORDER BY id ASC")
     fun getAllEmployees(): LiveData<List<Employee>>
 
-    @Query("SELECT * FROM employee_table WHERE isPresent = 1 ORDER BY id ASC")
+    @Query("SELECT * FROM employee_table WHERE isPresence = 1 ORDER BY id ASC")
     fun getPresentEmployees(): LiveData<List<Employee>>
 
-    @Query("UPDATE employee_table SET isPresent = :isPresent WHERE id = :employeeId")
+    @Query("UPDATE employee_table SET isPresence = :isPresent WHERE id = :employeeId")
     suspend fun updatePresence(employeeId: Long, isPresent: Boolean)
-
 }

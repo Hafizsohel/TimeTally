@@ -1,6 +1,6 @@
 package com.example.timetally.Fragment
 
-    import android.os.Bundle
+import android.os.Bundle
     import android.view.LayoutInflater
     import android.view.View
     import android.view.ViewGroup
@@ -15,49 +15,6 @@ package com.example.timetally.Fragment
     import com.example.timetally.R
     import com.example.timetally.databinding.FragmentEmployeeListBinding
 
-/*class EmployeeListFragment : Fragment() {
-
-        private lateinit var employeeViewModel: EmployeeViewModel
-        private lateinit var employeeAdapter: EmployeeAdapter
-        private lateinit var presenceAdapter: PresenceAdapter
-
-        private var _binding: FragmentEmployeeListBinding? = null
-        private val binding get() = _binding!!
-
-        override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
-        ): View? {
-            _binding = FragmentEmployeeListBinding.inflate(inflater, container, false)
-
-            employeeViewModel = ViewModelProvider(this).get(EmployeeViewModel::class.java)
-
-           *//* employeeAdapter = EmployeeAdapter(employeeViewModel.getEmployeeDao()) { employee ->
-                employeeViewModel.addEmployee(employee)
-            }*//*
-
-            employeeAdapter = EmployeeAdapter(employeeViewModel.getEmployeeDao()) { employee ->
-                employeeViewModel.updateEmployeePresence(employee)
-            }
-            presenceAdapter = PresenceAdapter()
-
-            binding.employeeRecyclerView.adapter = employeeAdapter
-            binding.employeeRecyclerView.layoutManager = LinearLayoutManager(context)
-            binding.recyclerViewEmployeePresence.adapter = presenceAdapter
-            binding.recyclerViewEmployeePresence.layoutManager = LinearLayoutManager(context)
-
-
-            employeeViewModel.allEmployees.observe(viewLifecycleOwner, Observer { employees ->
-                employees?.let { employeeAdapter.setEmployees(it) }
-            })
-            employeeViewModel.presentEmployees.observe(viewLifecycleOwner, Observer { presentEmployees ->
-                presentEmployees?.let { presenceAdapter.setPresenceEmployees(it) }
-            })
-            return binding.root
-        }
-    }*/
-
-
 class EmployeeListFragment : Fragment() {
     private lateinit var employeeViewModel: EmployeeViewModel
     private lateinit var employeeAdapter: EmployeeAdapter
@@ -71,10 +28,9 @@ class EmployeeListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentEmployeeListBinding.inflate(inflater, container, false)
-
         employeeViewModel = ViewModelProvider(this).get(EmployeeViewModel::class.java)
 
-        employeeAdapter = EmployeeAdapter(employeeViewModel.getEmployeeDao()) { employee ->
+        employeeAdapter = EmployeeAdapter(employeeViewModel.getEmployeeDao()) { employee, isChecked ->
             employeeViewModel.updateEmployeePresence(employee)
         }
         presenceAdapter = PresenceAdapter()
@@ -87,11 +43,15 @@ class EmployeeListFragment : Fragment() {
         employeeViewModel.allEmployees.observe(viewLifecycleOwner, Observer { employees ->
             employees?.let { employeeAdapter.setEmployees(it) }
         })
+        binding.okButton.setOnClickListener {
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.FrameLayoutID, MainFragment())
+                .commit()
+        }
 
-        employeeViewModel.presentEmployees.observe(viewLifecycleOwner, Observer { presentEmployees ->
-            presentEmployees?.let { presenceAdapter.setPresenceEmployees(it) }
+        employeeViewModel.presentEmployees.observe(viewLifecycleOwner, Observer { presenceEmployees ->
+            presenceEmployees?.let { presenceAdapter.setPresenceEmployees(it) }
         })
-
         return binding.root
     }
 }

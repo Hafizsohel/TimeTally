@@ -12,67 +12,6 @@ import com.example.timetally.Repository.EmployeeRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-/*
-package com.example.timetally.ViewModel
-
-import android.app.Application
-import androidx.lifecycle.*
-import com.example.timetally.DAO.EmployeeDao
-import com.example.timetally.DAO.EmployeeDatabase
-import kotlinx.coroutines.launch
-import com.example.timetally.Data.Employee
-import com.example.timetally.Repository.EmployeeRepository
-import kotlinx.coroutines.Dispatchers
-
-*/
-/*
-class EmployeeViewModel(application: Application) : AndroidViewModel(application) {
-     val allEmployees: LiveData<List<Employee>>
-    private val repository: EmployeeRepository
-    init {
-        val employeeDao = EmployeeDatabase.getDatabase(application).employeeDao()
-        repository = EmployeeRepository(employeeDao)
-        allEmployees = repository.getAllEmployees
-    }
-    fun addEmployee(employee: Employee) {
-        viewModelScope.launch(Dispatchers.IO) {
-            repository.insertEmployee(employee)
-        }
-    }
-}
-
-
-*/
-/*
-class EmployeeViewModel(application: Application) : AndroidViewModel(application) {
-
-    private val repository: EmployeeRepository
-    val allEmployees: LiveData<List<Employee>>
-    private val _presentEmployees = MutableLiveData<MutableList<Employee>>(mutableListOf())
-    val presentEmployees: MutableLiveData<MutableList<Employee>> get() = _presentEmployees
-
-    init {
-        val employeeDao = EmployeeDatabase.getDatabase(application).employeeDao()
-        repository = EmployeeRepository(employeeDao)
-        allEmployees = repository.getAllEmployees
-    }
-
-    fun addPresentEmployee(employee: Employee) {
-        val currentList = _presentEmployees.value ?: mutableListOf()
-        currentList.add(employee)
-        _presentEmployees.value = currentList
-    }
-
-    fun addEmployee(employee: Employee) {
-        viewModelScope.launch(Dispatchers.IO) {
-            repository.insertEmployee(employee)
-        }
-    }
-}
-
-*/
-
-
 
 class EmployeeViewModel(application: Application) : AndroidViewModel(application) {
     private val repository: EmployeeRepository
@@ -80,8 +19,16 @@ class EmployeeViewModel(application: Application) : AndroidViewModel(application
     val allEmployees: LiveData<List<Employee>> = employeeDao.getAllEmployees()
     val presentEmployees: LiveData<List<Employee>> = employeeDao.getPresentEmployees()
 
+    private val _presentEmployees = MutableLiveData<List<Employee>>()
+    private val _absentEmployees = MutableLiveData<List<Employee>>()
+    val absentEmployees: LiveData<List<Employee>> get() = _absentEmployees
+
     init {
         repository = EmployeeRepository(employeeDao)
+        allEmployees.observeForever { employees ->
+            _presentEmployees.value = employees.filter { it.isPresence }
+            _absentEmployees.value = employees.filter { !it.isPresence }
+        }
     }
     fun getEmployeeDao(): EmployeeDao {
         return employeeDao
@@ -95,8 +42,8 @@ class EmployeeViewModel(application: Application) : AndroidViewModel(application
 
     fun updateEmployeePresence(employee: Employee) {
         viewModelScope.launch(Dispatchers.IO) {
-            employeeDao.update(employee)
-            if (employee.isPresent) {
+            employeeDao.updateEmployee(employee)
+            if (employee.isPresence) {
                 addEmployee(employee)
             }
         }
