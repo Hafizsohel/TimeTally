@@ -13,6 +13,9 @@ import com.example.timetally.R
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 private const val TAG = "EmployeeAdapter"
 
@@ -46,14 +49,18 @@ class EmployeeAdapter(
                 currentEmployee.isPresence = isChecked
                 onEmployeePresenceChecked(currentEmployee,isChecked)
 
+           /* if (isChecked != currentEmployee.isPresence) {
+                currentEmployee.isPresence = isChecked
+                val currentDate = getCurrentDate()
+                currentEmployee.date = currentDate
+                onEmployeePresenceChecked(currentEmployee, isChecked)*/
+
+
                 // Update the database in the background thread
                 CoroutineScope(Dispatchers.IO).launch {
                     employeeDao.updateEmployee(currentEmployee)
                 }
 
-                if (isChecked) {
-                    removeEmployee(holder.adapterPosition)
-                }
                 Log.d(TAG, "onBindViewHolder: Employee ${currentEmployee.name} is present: $isChecked")
             }
         }
@@ -65,13 +72,9 @@ class EmployeeAdapter(
         this.employees = employees.toMutableList()
         notifyDataSetChanged()
     }
-
-    private fun removeEmployee(position: Int) {
-        if (position != -1) {
-            employees.removeAt(position)
-            notifyItemRemoved(position)
-            notifyItemRangeChanged(position, employees.size)
-        }
-    }
+   /* private fun getCurrentDate(): String {
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        return dateFormat.format(Date())
+    }*/
 }
 

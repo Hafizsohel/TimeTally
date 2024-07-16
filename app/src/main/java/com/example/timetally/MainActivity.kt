@@ -16,7 +16,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        window.statusBarColor = ContextCompat.getColor(this, R.color.colorBlue)
+        window.statusBarColor = ContextCompat.getColor(this, R.color.Green)
        // window.navigationBarColor = ContextCompat.getColor(this, R.color.colorBlue)
 
         if (savedInstanceState == null) {

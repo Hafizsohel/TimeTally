@@ -7,5 +7,6 @@ import androidx.room.PrimaryKey
 data class Employee(
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
     val name: String,
-    var isPresence: Boolean = false
+    var isPresence: Boolean = false,
+   // var date: String? = null
 )

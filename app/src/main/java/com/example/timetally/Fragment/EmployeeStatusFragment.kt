@@ -20,14 +20,13 @@ class EmployeeStatusFragment : Fragment() {
     private lateinit var presenceAdapter: PresenceAdapter
     private lateinit var absentAdapter: AbsentEmployeeAdapter
 
-    private var _binding: FragmentEmployeeStatusBinding? = null
-    private val binding get() = _binding!!
+    private lateinit var binding: FragmentEmployeeStatusBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentEmployeeStatusBinding.inflate(inflater, container, false)
+        binding = FragmentEmployeeStatusBinding.inflate(layoutInflater)
 
         presenceAdapter = PresenceAdapter()
         absentAdapter = AbsentEmployeeAdapter()

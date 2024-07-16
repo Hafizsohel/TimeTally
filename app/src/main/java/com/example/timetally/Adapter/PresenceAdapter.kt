@@ -21,7 +21,6 @@ class PresenceAdapter : RecyclerView.Adapter<PresenceAdapter.PresenceViewHolder>
             .inflate(R.layout.item_list, parent, false)
         return PresenceViewHolder(itemView)
     }
-
     override fun onBindViewHolder(holder: PresenceViewHolder, position: Int) {
         val currentEmployee = presenceEmployees[position]
         holder.serialNoText.text = "${position + 1}."
@@ -38,7 +37,5 @@ class PresenceAdapter : RecyclerView.Adapter<PresenceAdapter.PresenceViewHolder>
     fun getEmployees(): List<Employee> {
         return presenceEmployees
     }
-    fun hasData(): Boolean {
-        return presenceEmployees.isNotEmpty()
-    }
+
 }

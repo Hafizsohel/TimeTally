@@ -1,11 +1,13 @@
 package com.example.timetally.Fragment
 
 import android.app.DatePickerDialog
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import com.example.timetally.ViewModel.EmployeeViewModel
 import com.example.timetally.R
@@ -19,14 +21,13 @@ class MainFragment : Fragment() {
 
     private lateinit var employeeViewModel: EmployeeViewModel
     private var selectedDate: Calendar = Calendar.getInstance()
-    private var _binding: FragmentMainBinding? = null
-    private val binding get() = _binding!!
 
+    private lateinit var binding: FragmentMainBinding
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentMainBinding.inflate(inflater, container, false)
+        binding = FragmentMainBinding.inflate(layoutInflater)
         employeeViewModel = ViewModelProvider(this).get(EmployeeViewModel::class.java)
         binding.fabBtn.setOnClickListener {
             val dialogFragment = CustomDialogFragment()
@@ -47,6 +48,7 @@ class MainFragment : Fragment() {
     private fun showDatePicker() {
         val datePicker = DatePickerDialog(
             requireContext(),
+            R.style.DatePickerTheme,
             DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
                 selectedDate.set(year, month, dayOfMonth)
                 updateDate()
@@ -61,6 +63,9 @@ class MainFragment : Fragment() {
             selectedDate.get(Calendar.DAY_OF_MONTH)
         )
         datePicker.show()
+
+        datePicker.getButton(DatePickerDialog.BUTTON_NEGATIVE)?.setTextColor(ContextCompat.getColor(requireContext(), R.color.Green))
+        datePicker.getButton(DatePickerDialog.BUTTON_POSITIVE)?.setTextColor(ContextCompat.getColor(requireContext(), R.color.Green))
     }
 
     private fun updateDate() {

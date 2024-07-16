@@ -19,7 +19,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:tint="@android:color/white"
-        app:backgroundTint="@color/colorBlue" />
+        app:backgroundTint="@color/Green" />
 
     <Button
         android:id="@+id/btnSelectDate"
@@ -30,7 +30,7 @@
         android:gravity="start|center_vertical"
         android:paddingStart="30dp"
         android:background="@drawable/button_circle"
-        app:backgroundTint="@color/colorBlue"
+        app:backgroundTint="@color/Green"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
@@ -45,7 +45,7 @@
         android:layout_marginTop="12dp"
         android:text="Attendance List"
         android:background="@drawable/button_circle"
-        app:backgroundTint="@color/colorBlue"
+        app:backgroundTint="@color/Green"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"

@@ -1,5 +1,6 @@
 package com.example.timetally.Fragment
 
+import android.icu.text.SimpleDateFormat
 import android.os.Bundle
     import android.view.LayoutInflater
     import android.view.View
@@ -14,20 +15,20 @@ import android.os.Bundle
     import com.example.timetally.Adapter.PresenceAdapter
     import com.example.timetally.R
     import com.example.timetally.databinding.FragmentEmployeeListBinding
+import java.util.Date
+import java.util.Locale
 
 class EmployeeListFragment : Fragment() {
     private lateinit var employeeViewModel: EmployeeViewModel
     private lateinit var employeeAdapter: EmployeeAdapter
     private lateinit var presenceAdapter: PresenceAdapter
 
-    private var _binding: FragmentEmployeeListBinding? = null
-    private val binding get() = _binding!!
-
+    private lateinit var binding:FragmentEmployeeListBinding
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentEmployeeListBinding.inflate(inflater, container, false)
+        binding = FragmentEmployeeListBinding.inflate(layoutInflater)
         employeeViewModel = ViewModelProvider(this).get(EmployeeViewModel::class.java)
 
         employeeAdapter = EmployeeAdapter(employeeViewModel.getEmployeeDao()) { employee, isChecked ->
@@ -43,6 +44,13 @@ class EmployeeListFragment : Fragment() {
         employeeViewModel.allEmployees.observe(viewLifecycleOwner, Observer { employees ->
             employees?.let { employeeAdapter.setEmployees(it) }
         })
+
+        // Observe employeesByDate LiveData
+       /* employeeViewModel.employeesByDate.observe(viewLifecycleOwner, Observer { employees ->
+            employees?.let { employeeAdapter.setEmployees(it) }
+        })*/
+
+
         binding.okButton.setOnClickListener {
             parentFragmentManager.beginTransaction()
                 .replace(R.id.FrameLayoutID, MainFragment())
@@ -52,6 +60,13 @@ class EmployeeListFragment : Fragment() {
         employeeViewModel.presentEmployees.observe(viewLifecycleOwner, Observer { presenceEmployees ->
             presenceEmployees?.let { presenceAdapter.setPresenceEmployees(it) }
         })
+
+
+
+       /* val currentDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
+        employeeViewModel.getEmployeesByDate(currentDate)
+*/
+
         return binding.root
     }
 }

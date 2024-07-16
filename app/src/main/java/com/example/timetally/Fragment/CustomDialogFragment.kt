@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
@@ -12,18 +13,15 @@ import com.example.timetally.ViewModel.EmployeeViewModel
 import com.example.timetally.Data.Employee
 import com.example.timetally.databinding.FragmentCustomDialogBinding
 
-private const val TAG = "CustomDialogFragment"
-
 class CustomDialogFragment : DialogFragment() {
     private lateinit var employeeViewModel: EmployeeViewModel
-    private var _binding: FragmentCustomDialogBinding? = null
-    private val binding get() = _binding!!
+    private lateinit var binding: FragmentCustomDialogBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentCustomDialogBinding.inflate(inflater, container, false)
+        binding= FragmentCustomDialogBinding.inflate(layoutInflater)
 
         employeeViewModel = ViewModelProvider(this).get(EmployeeViewModel::class.java)
 
@@ -42,6 +40,13 @@ class CustomDialogFragment : DialogFragment() {
             dismiss()
         }
         return binding.root
+    }
+    override fun onStart() {
+        super.onStart()
+        dialog?.window?.setLayout(
+            WindowManager.LayoutParams.MATCH_PARENT,
+            WindowManager.LayoutParams.WRAP_CONTENT
+        )
     }
 }
 
