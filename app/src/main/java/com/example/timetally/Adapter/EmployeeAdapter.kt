@@ -29,6 +29,7 @@ class EmployeeAdapter(
         val employeeName: TextView = itemView.findViewById(R.id.employeeName)
         val serialNoText: TextView = itemView.findViewById(R.id.serialNoText)
         val checkPresence: CheckBox = itemView.findViewById(R.id.checkPresence)
+        val checkAbsent:CheckBox=itemView.findViewById(R.id.checkAbsent)
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EmployeeViewHolder {
         val itemView = LayoutInflater.from(parent.context)
@@ -55,7 +56,6 @@ class EmployeeAdapter(
                 currentEmployee.date = currentDate
                 onEmployeePresenceChecked(currentEmployee, isChecked)*/
 
-
                 // Update the database in the background thread
                 CoroutineScope(Dispatchers.IO).launch {
                     employeeDao.updateEmployee(currentEmployee)
@@ -76,5 +76,7 @@ class EmployeeAdapter(
         val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
         return dateFormat.format(Date())
     }*/
+
+
 }
 
