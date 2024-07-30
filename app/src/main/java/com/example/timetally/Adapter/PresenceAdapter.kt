@@ -15,7 +15,6 @@ class PresenceAdapter : RecyclerView.Adapter<PresenceAdapter.PresenceViewHolder>
         val employeeName: TextView = itemView.findViewById(R.id.employeeName)
         val serialNoText: TextView = itemView.findViewById(R.id.serialNoText)
     }
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PresenceViewHolder {
         val itemView = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_list, parent, false)
@@ -26,16 +25,13 @@ class PresenceAdapter : RecyclerView.Adapter<PresenceAdapter.PresenceViewHolder>
         holder.serialNoText.text = "${position + 1}."
         holder.employeeName.text = currentEmployee.name
     }
-
     override fun getItemCount(): Int = presenceEmployees.size
 
     fun setPresenceEmployees(employees: List<Employee>) {
         this.presenceEmployees = employees.toMutableList()
         notifyDataSetChanged()
     }
-
     fun getEmployees(): List<Employee> {
         return presenceEmployees
     }
-
 }

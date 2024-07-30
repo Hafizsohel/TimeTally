@@ -48,5 +48,13 @@ class EmployeeViewModel(application: Application) : AndroidViewModel(application
             }
         }
     }
+    fun resetPresenceForOtherDates(date: String) {
+        viewModelScope.launch {
+            employeeDao.resetPresenceForOtherDates(date)
+        }
+    }
+    fun getPresentEmployeesByDate(date: String): LiveData<List<Employee>> {
+        return employeeDao.getPresentEmployeesByDate(date)
+    }
 }
 

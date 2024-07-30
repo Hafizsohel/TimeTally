@@ -24,6 +24,7 @@ class EmployeeAdapter(
     private val onEmployeePresenceChecked: (Employee, Boolean) -> Unit
 ) : RecyclerView.Adapter<EmployeeAdapter.EmployeeViewHolder>() {
     private var employees = mutableListOf<Employee>()
+    private var currentDate: String = getCurrentDate()
 
     inner class EmployeeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val employeeName: TextView = itemView.findViewById(R.id.employeeName)
@@ -43,22 +44,30 @@ class EmployeeAdapter(
         holder.employeeName.text = currentEmployee.name
 
         holder.checkPresence.setOnCheckedChangeListener(null)
-        holder.checkPresence.isChecked = currentEmployee.isPresence
+        holder.checkPresence.isChecked = currentEmployee.isPresence && currentEmployee.date == currentDate
+
+        // holder.checkPresence.isChecked = currentEmployee.isPresence
 
         holder.checkPresence.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked != currentEmployee.isPresence) {
+            /*if (isChecked != currentEmployee.isPresence) {
                 currentEmployee.isPresence = isChecked
-                onEmployeePresenceChecked(currentEmployee,isChecked)
+                onEmployeePresenceChecked(currentEmployee,isChecked)*/
 
+            //worked code
            /* if (isChecked != currentEmployee.isPresence) {
                 currentEmployee.isPresence = isChecked
-                val currentDate = getCurrentDate()
-                currentEmployee.date = currentDate
+                currentEmployee.date = getCurrentDate()
                 onEmployeePresenceChecked(currentEmployee, isChecked)*/
+
+            if (isChecked != currentEmployee.isPresence || currentEmployee.date != currentDate) {
+                currentEmployee.isPresence = isChecked
+                currentEmployee.date = if (isChecked) currentDate else null
+                onEmployeePresenceChecked(currentEmployee, isChecked)
 
                 // Update the database in the background thread
                 CoroutineScope(Dispatchers.IO).launch {
                     employeeDao.updateEmployee(currentEmployee)
+                    employeeDao.resetPresenceForOtherDates(currentDate)
                 }
 
                 Log.d(TAG, "onBindViewHolder: Employee ${currentEmployee.name} is present: $isChecked")
@@ -72,11 +81,9 @@ class EmployeeAdapter(
         this.employees = employees.toMutableList()
         notifyDataSetChanged()
     }
-   /* private fun getCurrentDate(): String {
+    private fun getCurrentDate(): String {
         val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
         return dateFormat.format(Date())
-    }*/
-
-
+    }
 }
 

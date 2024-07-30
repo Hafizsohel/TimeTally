@@ -25,6 +25,8 @@ interface EmployeeDao {
     @Query("UPDATE employee_table SET isPresence = :isPresent WHERE id = :employeeId")
     suspend fun updatePresence(employeeId: Long, isPresent: Boolean)
 
-   /* @Query("SELECT * FROM employee_table WHERE date = :date")
-    suspend fun getEmployeesByDate(date: String): List<Employee>*/
+    @Query("SELECT * FROM employee_table WHERE date = :date AND isPresence = 1")
+    fun getPresentEmployeesByDate(date: String): LiveData<List<Employee>>
+    @Query("UPDATE employee_table SET isPresence = 0 WHERE date != :date")
+    suspend fun resetPresenceForOtherDates(date: String)
 }
