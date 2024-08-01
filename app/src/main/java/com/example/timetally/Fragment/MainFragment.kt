@@ -1,8 +1,8 @@
 package com.example.timetally.Fragment
 
 import android.app.DatePickerDialog
-import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -16,12 +16,11 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 
-
+private const val TAG = "MainFragment"
 class MainFragment : Fragment() {
 
     private lateinit var employeeViewModel: EmployeeViewModel
     private var selectedDate: Calendar = Calendar.getInstance()
-
     private lateinit var binding: FragmentMainBinding
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,6 +36,12 @@ class MainFragment : Fragment() {
             showDatePicker()
         }
         binding.btnAttendanceList.setOnClickListener {
+            val fragment = EmployeeListFragment().apply {
+                arguments = Bundle().apply {
+                    putString("selected_date", getSelectedDateString())
+                    Log.d(TAG, "onCreateViewD: ${selectedDate}")
+                }
+            }
             parentFragmentManager.beginTransaction()
                 .replace(R.id.FrameLayoutID, EmployeeStatusFragment())
                 .addToBackStack(null)
@@ -62,8 +67,14 @@ class MainFragment : Fragment() {
             selectedDate.get(Calendar.MONTH),
             selectedDate.get(Calendar.DAY_OF_MONTH)
         )
-        datePicker.show()
+        // Disable future dates
+        datePicker.datePicker.maxDate = System.currentTimeMillis()
 
+        // Disable previous dates before 6 days
+        selectedDate.add(Calendar.DAY_OF_YEAR, -6)
+        datePicker.datePicker.minDate = selectedDate.timeInMillis
+
+        datePicker.show()
         datePicker.getButton(DatePickerDialog.BUTTON_NEGATIVE)?.setTextColor(ContextCompat.getColor(requireContext(), R.color.Green))
         datePicker.getButton(DatePickerDialog.BUTTON_POSITIVE)?.setTextColor(ContextCompat.getColor(requireContext(), R.color.Green))
     }
@@ -73,7 +84,11 @@ class MainFragment : Fragment() {
         val sdf = SimpleDateFormat(myFormat, Locale.US)
         binding.btnSelectDate.text = sdf.format(selectedDate.time)
     }
+    private fun getSelectedDateString(): String {
+        val myFormat = "yyyy-MM-dd" // Format suitable for database
+        val sdf = SimpleDateFormat(myFormat, Locale.US)
+        return sdf.format(selectedDate.time)
+    }
 }
-
 
 

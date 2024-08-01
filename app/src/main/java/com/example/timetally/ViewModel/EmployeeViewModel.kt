@@ -40,7 +40,7 @@ class EmployeeViewModel(application: Application) : AndroidViewModel(application
         }
     }
 
-    fun updateEmployeePresence(employee: Employee) {
+    fun updateEmployeePresence(employee: Employee, date: String?) {
         viewModelScope.launch(Dispatchers.IO) {
             employeeDao.updateEmployee(employee)
             if (employee.isPresence) {

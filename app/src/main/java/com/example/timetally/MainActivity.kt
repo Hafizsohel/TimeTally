@@ -17,7 +17,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         window.statusBarColor = ContextCompat.getColor(this, R.color.Green)
-       // window.navigationBarColor = ContextCompat.getColor(this, R.color.colorBlue)
+       // window.navigationBarColor = ContextCompat.getColor(this, R.color.Green)
 
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()

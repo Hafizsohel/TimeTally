@@ -21,6 +21,7 @@ private const val TAG = "EmployeeAdapter"
 
 class EmployeeAdapter(
     private val employeeDao: EmployeeDao,
+    private val selectedDate: String?,
     private val onEmployeePresenceChecked: (Employee, Boolean) -> Unit
 ) : RecyclerView.Adapter<EmployeeAdapter.EmployeeViewHolder>() {
     private var employees = mutableListOf<Employee>()
