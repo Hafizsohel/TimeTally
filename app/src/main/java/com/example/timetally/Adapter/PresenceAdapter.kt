@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.timetally.Data.Employee
 import com.example.timetally.R
 
-class PresenceAdapter : RecyclerView.Adapter<PresenceAdapter.PresenceViewHolder>() {
+class PresenceAdapter(private val selectedDate: String?) : RecyclerView.Adapter<PresenceAdapter.PresenceViewHolder>() {
     private var presenceEmployees = mutableListOf<Employee>()
 
     inner class PresenceViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -29,6 +29,7 @@ class PresenceAdapter : RecyclerView.Adapter<PresenceAdapter.PresenceViewHolder>
 
     fun setPresenceEmployees(employees: List<Employee>) {
         this.presenceEmployees = employees.toMutableList()
+        this.presenceEmployees = employees.filter { it.date == selectedDate }.toMutableList()
         notifyDataSetChanged()
     }
     fun getEmployees(): List<Employee> {

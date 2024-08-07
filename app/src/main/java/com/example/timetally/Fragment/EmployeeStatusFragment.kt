@@ -19,8 +19,9 @@ class EmployeeStatusFragment : Fragment() {
     private val employeeViewModel: EmployeeViewModel by viewModels()
     private lateinit var presenceAdapter: PresenceAdapter
     private lateinit var absentAdapter: AbsentEmployeeAdapter
-
     private lateinit var binding: FragmentEmployeeStatusBinding
+
+    private var selectedDate: String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -28,7 +29,8 @@ class EmployeeStatusFragment : Fragment() {
     ): View {
         binding = FragmentEmployeeStatusBinding.inflate(layoutInflater)
 
-        presenceAdapter = PresenceAdapter()
+        selectedDate = arguments?.getString("selected_date")
+        presenceAdapter = PresenceAdapter(selectedDate)
         absentAdapter = AbsentEmployeeAdapter()
 
         binding.presentRecyclerView.apply {
