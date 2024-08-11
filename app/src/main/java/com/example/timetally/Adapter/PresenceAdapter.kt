@@ -1,5 +1,6 @@
 package com.example.timetally.Adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.timetally.Data.Employee
 import com.example.timetally.R
 
+private const val TAG = "PresenceAdapter"
 class PresenceAdapter(private val selectedDate: String?) : RecyclerView.Adapter<PresenceAdapter.PresenceViewHolder>() {
     private var presenceEmployees = mutableListOf<Employee>()
 
@@ -28,10 +30,16 @@ class PresenceAdapter(private val selectedDate: String?) : RecyclerView.Adapter<
     override fun getItemCount(): Int = presenceEmployees.size
 
     fun setPresenceEmployees(employees: List<Employee>) {
-        this.presenceEmployees = employees.toMutableList()
-        this.presenceEmployees = employees.filter { it.date == selectedDate }.toMutableList()
+        val filteredEmployees = if (selectedDate != null) {
+            employees.filter { it.date == selectedDate }
+        } else {
+            employees
+        }
+        Log.d(TAG, "Filtered employees for date: $selectedDate: $filteredEmployees")
+        this.presenceEmployees = filteredEmployees.toMutableList()
         notifyDataSetChanged()
     }
+
     fun getEmployees(): List<Employee> {
         return presenceEmployees
     }

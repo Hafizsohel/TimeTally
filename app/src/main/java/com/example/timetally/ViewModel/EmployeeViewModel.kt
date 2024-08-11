@@ -14,10 +14,10 @@ import kotlinx.coroutines.launch
 
 
 class EmployeeViewModel(application: Application) : AndroidViewModel(application) {
-    private val repository: EmployeeRepository
+    private var repository: EmployeeRepository
     private val employeeDao: EmployeeDao = EmployeeDatabase.getDatabase(application).employeeDao()
     val allEmployees: LiveData<List<Employee>> = employeeDao.getAllEmployees()
-    val presentEmployees: LiveData<List<Employee>> = employeeDao.getPresentEmployees()
+    var presentEmployees: LiveData<List<Employee>> = employeeDao.getPresentEmployees()
 
     private val _presentEmployees = MutableLiveData<List<Employee>>()
     private val _absentEmployees = MutableLiveData<List<Employee>>()
@@ -28,6 +28,7 @@ class EmployeeViewModel(application: Application) : AndroidViewModel(application
         allEmployees.observeForever { employees ->
             _presentEmployees.value = employees.filter { it.isPresence }
             _absentEmployees.value = employees.filter { !it.isPresence }
+
         }
     }
     fun getEmployeeDao(): EmployeeDao {
@@ -55,6 +56,11 @@ class EmployeeViewModel(application: Application) : AndroidViewModel(application
     }
     fun getPresentEmployeesByDate(date: String): LiveData<List<Employee>> {
         return employeeDao.getPresentEmployeesByDate(date)
+    }
+
+    fun setSelectedDate(date: String) {
+        presentEmployees = repository.getPresentEmployeesByDate(date)
+       // absentEmployees = repository.getAbsentEmployeesByDate(date)
     }
 }
 

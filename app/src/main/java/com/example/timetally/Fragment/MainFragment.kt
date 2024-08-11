@@ -133,12 +133,22 @@ class MainFragment : Fragment() {
             showDatePicker()
         }
 
-        binding.btnAttendanceList.setOnClickListener {
-            val fragment = EmployeeListFragment().apply {
+       /* binding.btnAttendanceList.setOnClickListener {
+            val fragment = EmployeeStatusFragment().apply {
                 arguments = Bundle().apply {
                     putString("selected_date", getSelectedDateString())
                 }
+            }*/
+
+        binding.btnAttendanceList.setOnClickListener {
+            val selectedDateString = getSelectedDateString()
+            Log.d(TAG, "Passing selected date: $selectedDateString") // Log the date before passing
+            val fragment = EmployeeStatusFragment().apply {
+                arguments = Bundle().apply {
+                    putString("selected_date", selectedDateString)
+                }
             }
+
             parentFragmentManager.beginTransaction()
                 .replace(R.id.FrameLayoutID, EmployeeStatusFragment())
                 .addToBackStack(null)
@@ -155,14 +165,26 @@ class MainFragment : Fragment() {
                 updateDate()
                 Log.d(TAG, "selectedDate: ${selectedDate.time}")
 
+                val fragment = EmployeeStatusFragment().apply {
+                    arguments = Bundle().apply {
+                        putString("selected_date", getSelectedDateString())
+                    }
+                }
+
                 parentFragmentManager.beginTransaction()
                     .replace(R.id.FrameLayoutID, EmployeeListFragment().apply {
                         arguments = Bundle().apply {
                             putString("selected_date", getSelectedDateString())
                         }
                     })
+
                     .addToBackStack(null)
                     .commit()
+
+
+                // Log selected date string to check correctness
+                Log.d(TAG, "Selected date string: ${getSelectedDateString()}")
+
             },
             selectedDate.get(Calendar.YEAR),
             selectedDate.get(Calendar.MONTH),
@@ -171,8 +193,8 @@ class MainFragment : Fragment() {
         // Disable future dates
         datePicker.datePicker.maxDate = System.currentTimeMillis()
 
-        // Disable previous dates before 6 days
-        selectedDate.add(Calendar.DAY_OF_YEAR, -6)
+        // Disable previous dates before 0 days
+        selectedDate.add(Calendar.DAY_OF_YEAR,0)
         datePicker.datePicker.minDate = selectedDate.timeInMillis
 
         datePicker.show()
@@ -186,7 +208,7 @@ class MainFragment : Fragment() {
         binding.btnSelectDate.text = sdf.format(selectedDate.time)
     }
     private fun getSelectedDateString(): String {
-        val myFormat = "yyyy-MM-dd" // Format suitable for database
+        val myFormat = "dd-MM-yyyy"
         val sdf = SimpleDateFormat(myFormat, Locale.US)
         return sdf.format(selectedDate.time)
     }

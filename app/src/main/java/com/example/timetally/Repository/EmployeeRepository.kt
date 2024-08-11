@@ -17,4 +17,11 @@ class EmployeeRepository(private val employeeDao: EmployeeDao) {
     suspend fun updatePresence(employeeId: Long, isPresent: Boolean) {
         employeeDao.updatePresence(employeeId, isPresent)
     }
+
+    // Fetch present employees by date
+    fun getPresentEmployeesByDate(date: String): LiveData<List<Employee>> {
+        return employeeDao.getPresentEmployeesByDate(date)
+    }
+
+    // Fetch absent employees by date
 }
