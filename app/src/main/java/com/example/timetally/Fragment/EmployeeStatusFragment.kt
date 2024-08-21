@@ -67,6 +67,9 @@ class EmployeeStatusFragment : Fragment() {
             presenceAdapter.setPresenceEmployees(employees)
             updateRecyclerViewVisibility()
         }
+        binding.toolbarStatus.setNavigationOnClickListener {
+            requireActivity().onBackPressed()
+        }
 
         employeeViewModel.absentEmployees.observe(viewLifecycleOwner) { employees ->
             absentAdapter.setAbsentEmployees(employees)

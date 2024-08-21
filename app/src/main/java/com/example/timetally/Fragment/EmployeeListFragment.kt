@@ -81,6 +81,10 @@ class EmployeeListFragment : Fragment() {
                 .commit()
         }
 
+        binding.toolbar.setNavigationOnClickListener {
+            requireActivity().onBackPressed()
+        }
+
         // Observe present employees
         employeeViewModel.presentEmployees.observe(
             viewLifecycleOwner,

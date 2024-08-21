@@ -146,7 +146,6 @@ class EmployeeAdapter(
                 currentEmployee.date = if (isChecked) selectedDate else null
                 onEmployeePresenceChecked(currentEmployee, isChecked)
 
-                // Update the database in the background thread
                 CoroutineScope(Dispatchers.IO).launch {
                     employeeDao.updateEmployee(currentEmployee)
                     selectedDate?.let {
@@ -160,7 +159,6 @@ class EmployeeAdapter(
             }
         }
     }
-
     override fun getItemCount(): Int = employees.size
     fun setEmployees(employees: List<Employee>) {
         this.employees = employees.toMutableList()
